@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北市大暑期地球科學課程計畫 - 地震學、地球物理與 AI／Agent 輔助教學實作</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-active {
+            border-bottom-color: #0284c7;
+            color: #0284c7;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Header / Hero Section -->
+    <header class="bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 text-white border-b border-slate-800 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-100 text-xs sm:text-sm font-medium mb-4 border border-brand-500/30">
+                <i class="fa-solid fa-graduation-cap"></i> 中小學現職教師研習課程
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+                北市大暑期地球科學課程計畫 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-300 font-light max-w-3xl mb-8">
+                主題：地震學、地球物理與 AI／Agent 輔助教學實作 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800/80 text-sm">
+                <div class="flex items-center gap-3 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                    <i class="fa-regular fa-calendar text-brand-500 text-xl"></i>
+                    <div>
+                        <div class="text-slate-400 text-xs">課程時間 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <div class="font-medium text-slate-200">2026/7/17 起，每週五上午 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                    <i class="fa-regular fa-clock text-brand-500 text-xl"></i>
+                    <div>
+                        <div class="text-slate-400 text-xs">總計週數／時數 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <div class="font-medium text-slate-200">共 6 週，每次 4 小時 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                    <i class="fa-solid fa-heart-pulse text-brand-500 text-xl"></i>
+                    <div>
+                        <div class="text-slate-400 text-xs">核心精神 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <div class="font-medium text-slate-200">教學相長、動手做、啟發創造力 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="sticky top-0 bg-white border-b border-slate-200 shadow-sm z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex overflow-x-auto space-x-8 no-scrollbar">
+                <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn tab-active py-4 px-1 inline-flex items-center gap-2 border-b-2 border-transparent text-sm font-medium whitespace-nowrap">
+                    <i class="fa-solid fa-compass"></i> 課程總覽與目標 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                </button>
+                <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn text-slate-500 hover:text-slate-700 py-4 px-1 inline-flex items-center gap-2 border-b-2 border-transparent text-sm font-medium whitespace-nowrap">
+                    <i class="fa-solid fa-table-cells"></i> 6 週總表 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                </button>
+                <button onclick="switchTab('detail')" id="tab-detail" class="tab-btn text-slate-500 hover:text-slate-700 py-4 px-1 inline-flex items-center gap-2 border-b-2 border-transparent text-sm font-medium whitespace-nowrap">
+                    <i class="fa-solid fa-list-check"></i> 每週詳細內容 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                </button>
+                <button onclick="switchTab('grading')" id="tab-grading" class="tab-btn text-slate-500 hover:text-slate-700 py-4 px-1 inline-flex items-center gap-2 border-b-2 border-transparent text-sm font-medium whitespace-nowrap">
+                    <i class="fa-solid fa-chart-pie"></i> 評量方式 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB 1: OVERVIEW -->
+        <section id="content-overview" class="tab-content space-y-8">
+            
+            <!-- Pitch Banner -->
+            <div class="bg-brand-50 border border-brand-100 rounded-xl p-6 text-brand-900 shadow-sm flex flex-col md:flex-row gap-6 items-center">
+                <div class="p-4 bg-brand-500 text-white rounded-full text-2xl flex-shrink-0">
+                    <i class="fa-solid fa-quote-left"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold mb-1">課程一句話總結 <cite class="not-italic text-brand-500">[cite: 1]</cite></h2>
+                    <p class="text-brand-700 text-sm sm:text-base leading-relaxed">
+                        這門課的目標不是只教地震學，而是讓中小學教師親手把地震學、地球物理、真實資料、AI agent、雲端平台與互動教材整合起來，做出能帶回學校、啟發學生興趣與創造力的地球科學教學作品。 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Positioning & Core Goals Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Course Positioning -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 text-brand-600 font-bold mb-4">
+                            <i class="fa-solid fa-crosshairs text-lg"></i>
+                            <h2 class="text-xl text-slate-900">一、課程定位 <cite class="not-italic text-brand-500">[cite: 1]</cite></h2>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            本課程是為中小學現職教師設計的暑期地球科學課程，內容以<strong>地震學與地球物理學</strong>為主軸，同時導入 AI／Agent 工具與雲端平台，讓教師能把地震學知識轉化為可帶回學校使用的教材、互動網頁、資料分析活動與教學專題。 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                        </p>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            本課程也可作為開學後「地球物理學」課程的前導與素材庫。暑期課程偏重教師研習、動手做與教學轉化；開學後課程則可在相同素材基礎上加深理論、數學、資料分析與研究應用。 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 bg-slate-50 rounded-lg p-3 text-xs text-slate-500">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> 開學後可銜接大學部／研究所地球物理學基礎課程。 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                    </div>
+                </div>
+
+                <!-- Course Core Goals -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex items-center gap-2 text-brand-600 font-bold mb-4">
+                        <i class="fa-solid fa-bullseye text-lg"></i>
+                        <h2 class="text-xl text-slate-900">二、課程核心目標 <cite class="not-italic text-brand-500">[cite: 1]</cite></h2>
+                    </div>
+                    <ul class="space-y-2.5 text-slate-600 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span>建立中小學教師對地震學與地球物理學的基本理解。 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span>學會使用真實地震資料進行簡單分析與教學設計。 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span>練習將地震學概念轉化成中小學可理解的活動。 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span>熟悉 opencode、Antigravity CLI、Hermes agent、GitHub、Hugging Face、Vercel、Google GAS、Google GWS 等工具。 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span>透過 Google GWS 與 GAS 建立教學自動化、資料收集與成果展示流程。 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span>每週完成一個可檢核的作業。 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span>安排一次野外實驗或簡易地震儀觀測活動。 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span>最後產出一份可帶回學校使用的地震教學作品。 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4-Hour Weekly Routine -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center gap-2 text-brand-600 font-bold mb-4">
+                    <i class="fa-regular fa-clock text-lg"></i>
+                    <h2 class="text-xl text-slate-900">四、每週 4 小時固定流程 <cite class="not-italic text-brand-500">[cite: 1]</cite></h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div class="border border-slate-100 bg-slate-50 p-4 rounded-lg">
+                        <div class="text-xs font-bold text-brand-600 mb-1">0:00–0:20 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <div class="text-sm font-semibold text-slate-800">本週導入 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <p class="text-xs text-slate-500 mt-1">台灣地震案例、新聞、課程目標 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="border border-slate-100 bg-slate-50 p-4 rounded-lg">
+                        <div class="text-xs font-bold text-brand-600 mb-1">0:20–1:10 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <div class="text-sm font-semibold text-slate-800">核心概念 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <p class="text-xs text-slate-500 mt-1">地震學／地球物理核心概念 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="border border-slate-100 bg-slate-50 p-4 rounded-lg">
+                        <div class="text-xs font-bold text-brand-600 mb-1">1:10–2:00 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <div class="text-sm font-semibold text-slate-800">案例與實作 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <p class="text-xs text-slate-500 mt-1">IRIS 案例、真實資料或教學活動操作 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="border border-slate-100 bg-slate-50 p-4 rounded-lg">
+                        <div class="text-xs font-bold text-brand-600 mb-1">2:00–3:20 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <div class="text-sm font-semibold text-slate-800">數位實作 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <p class="text-xs text-slate-500 mt-1">數位工具實作與教材製作 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="border border-slate-100 bg-slate-50 p-4 rounded-lg">
+                        <div class="text-xs font-bold text-brand-600 mb-1">3:20–4:00 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <div class="text-sm font-semibold text-slate-800">統整與作業 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                        <p class="text-xs text-slate-500 mt-1">作業說明、小組分享、作品整理、下週任務 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 mt-4 bg-amber-50 text-amber-800 p-3 rounded-md border border-amber-200">
+                    <i class="fa-solid fa-circle-info mr-1"></i> 第一週因為要建立環境，所以調整為「介紹與安裝工作坊」，不進行正式 IRIS 活動實作。 <cite class="not-italic text-brand-500">[cite: 1]</cite>
+                </p>
+            </div>
+        </section>
+
+        <!-- TAB 2: SCHEDULE TABLE -->
+        <section id="content-schedule" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">三、6 週課程總表與可檢核作業 <cite class="not-italic text-brand-500">[cite: 1]</cite></h2>
+                        <p class="text-xs text-slate-500 mt-1">點擊可查看各週進度概要 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead class="bg-slate-50 text-slate-600 uppercase text-xs">
+                            <tr>
+                                <th class="p-4 border-b">週次</th>
+                                <th class="p-4 border-b">日期 <cite class="not-italic text-brand-500">[cite: 1]</cite></th>
+                                <th class="p-4 border-b">主題 <cite class="not-italic text-brand-500">[cite: 1]</cite></th>
+                                <th class="p-4 border-b">工具／案例 <cite class="not-italic text-brand-500">[cite: 1]</cite></th>
+                                <th class="p-4 border-b">可檢核作業 <cite class="not-italic text-brand-500">[cite: 1]</cite></th>
+                                <th class="p-4 border-b">檢核標準 <cite class="not-italic text-brand-500">[cite: 1]</cite></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="p-4 font-bold text-brand-600 whitespace-nowrap">Week 1 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-slate-500 whitespace-nowrap">7/17 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-medium text-slate-800">課程介紹、帳號申請、軟體安裝、工作流程建立 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-600">Google GWS、GitHub、Hugging Face、Vercel、GAS、opencode、Antigravity CLI、Hermes agent <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-semibold text-brand-700 whitespace-nowrap">作業 1：完成個人數位學習工作區 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-500">繳交帳號清單、GitHub repo 連結、Google Drive 資料夾截圖、GAS 測試表單連結 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="p-4 font-bold text-brand-600 whitespace-nowrap">Week 2 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-slate-500 whitespace-nowrap">7/24 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-medium text-slate-800">地震儀、加速度、地震動與震度 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-600">手機感測器、Google Sheets、GAS、IRIS ground-shaking activity <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-semibold text-brand-700 whitespace-nowrap">作業 2：完成簡易震動觀測活動 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-500">繳交一筆震動資料、一張圖表、一份學生學習單、一段 200 字教學說明 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="p-4 font-bold text-brand-600 whitespace-nowrap">Week 3 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-slate-500 whitespace-nowrap">7/31 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-medium text-slate-800">P-S 到時差、旅行時間曲線與震央定位 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-600">IRIS 震央定位活動、Python、opencode、GitHub <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-semibold text-brand-700 whitespace-nowrap">作業 3：完成震央定位教學範例 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-500">繳交 P/S 到時表、三測站定位圖、GitHub 程式或試算表連結、學生提問設計 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="p-4 font-bold text-brand-600 whitespace-nowrap">Week 4 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-slate-500 whitespace-nowrap">8/7 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-medium text-slate-800">課本第 4 章精讀與真實地震波形資料 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-600">Introduction to Earthquake Seismology 第 4 章、jAmaSeis、Hugging Face Dataset <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-semibold text-brand-700 whitespace-nowrap">作業 4：完成第 4 章導讀與波形分析小報告 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-500">繳交一頁中文導讀、一張波形圖、三個教學重點、一段反思 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="p-4 font-bold text-brand-600 whitespace-nowrap">Week 5 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-slate-500 whitespace-nowrap">8/14 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-medium text-slate-800">規模、震度、場址效應與建物反應 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-600">IRIS Magnitude/Intensity、Buildings in Earthquakes、Vercel、GAS <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-semibold text-brand-700 whitespace-nowrap">作業 5：完成地震防災互動網頁初版 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-500">繳交網頁連結、規模 vs 震度說明、場址效應示意、學生互動題 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="p-4 font-bold text-brand-600 whitespace-nowrap">Week 6 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-slate-500 whitespace-nowrap">8/21 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-medium text-slate-800">野外實驗、成果整合與教案發表 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-600">地震儀或手機感測器、Teachable Moments、Hermes agent、GitHub Pages <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 font-semibold text-brand-700 whitespace-nowrap">作業 6：完成期末教學作品與 5–7 分鐘發表 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                <td class="p-4 text-xs text-slate-500">繳交作品連結、教案、學習單、資料或展示圖、成果簡報 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: WEEKLY DETAILS -->
+        <section id="content-detail" class="tab-content hidden space-y-8">
+
+            <!-- Week 1 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Week 1 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        <h3 class="text-xl font-bold text-slate-900">課程介紹、帳號申請、軟體安裝與工作流程建立 <cite class="not-italic text-brand-500">[cite: 1]</cite></h3>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium"><i class="fa-regular fa-calendar mr-1"></i> 2026/7/17 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-list-ol text-brand-500 mr-1"></i> 本週內容 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <ol class="list-decimal list-inside text-xs text-slate-600 space-y-1">
+                            <li>課程總覽與學習目標說明。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>建立 Google Drive 課程資料夾。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>建立 GitHub 帳號與個人 repo。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>建立 Hugging Face 帳號。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>建立 Vercel 帳號。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>測試 Google Forms、Sheets、Apps Script。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>安裝或確認 Git、VS Code、Python、Node.js、Java。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>安裝或導覽 opencode、Antigravity CLI、Hermes agent。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>瀏覽 IRIS InClass 地震學教學資源。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            <li>撰寫個人學習目標。 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                        </ol>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <h4 class="font-bold text-brand-700 text-sm mb-2"><i class="fa-solid fa-pen-to-square mr-1"></i> 作業 1：完成個人數位學習工作區 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-3"><strong>繳交內容：</strong>Google Drive 資料夾截圖、GitHub repo 連結、Hugging Face 帳號、Vercel 截圖、Google Form 測試表單、Google Sheets 回應表截圖、GAS 測試成功截圖、安裝檢查表、100–200 字學習目標。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <div class="text-xs border-t border-slate-200 pt-2">
+                            <span class="font-semibold text-slate-700">檢核標準： <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                            <ul class="list-disc list-inside text-slate-500 mt-1">
+                                <li>帳號完成至少 3 項 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>GitHub 包含 README.md <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>GAS 執行測試成功 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 2 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Week 2 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        <h3 class="text-xl font-bold text-slate-900">地震儀、加速度、地震動與震度 <cite class="not-italic text-brand-500">[cite: 1]</cite></h3>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium"><i class="fa-regular fa-calendar mr-1"></i> 2026/7/24 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-wave-square text-brand-500 mr-1"></i> 主題與活動 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-2"><strong>主題：</strong>地震儀到底記錄了什麼？地面搖晃如何被量化？震度和加速度有什麼關係？ <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <p class="text-xs text-slate-600"><strong>教學活動：</strong>使用 IRIS ground-shaking 類活動，透過三分量加速度計、手機、筆電或 USB 感測器理解地面搖晃與加速度測量。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <h4 class="font-bold text-brand-700 text-sm mb-2"><i class="fa-solid fa-pen-to-square mr-1"></i> 作業 2：完成簡易震動觀測活動 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-3"><strong>繳交內容：</strong>震動紀錄、Google Sheets 圖表、學生版學習單、教師版教學說明、200 字教學說明。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <div class="text-xs border-t border-slate-200 pt-2">
+                            <span class="font-semibold text-slate-700">檢核標準： <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                            <ul class="list-disc list-inside text-slate-500 mt-1">
+                                <li>實測/模擬資料與強弱圖表 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>學習單包含 3 題學生問題 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>區分「體感搖晃」與「儀器量測」 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 3 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Week 3 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        <h3 class="text-xl font-bold text-slate-900">P-S 到時差、旅行時間曲線與震央定位 <cite class="not-italic text-brand-500">[cite: 1]</cite></h3>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium"><i class="fa-regular fa-calendar mr-1"></i> 2026/7/31 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-location-dot text-brand-500 mr-1"></i> 主題與活動 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-2"><strong>主題：</strong>只靠幾個測站的地震波紀錄，如何知道地震發生在哪裡？ <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <p class="text-xs text-slate-600"><strong>教學活動：</strong>IRIS 震央定位活動。從三分量紀錄中辨識 P/S 波，量測到時差，用旅行時間曲線估算震央距，最後繪製交會點定位。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <h4 class="font-bold text-brand-700 text-sm mb-2"><i class="fa-solid fa-pen-to-square mr-1"></i> 作業 3：完成震央定位教學範例 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-3"><strong>繳交內容：</strong>3 測站 P/S 到時表、P-S 到時差表、震央距估算、三測站定位圖、GitHub 或 Sheets 連結、學生提問設計。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <div class="text-xs border-t border-slate-200 pt-2">
+                            <span class="font-semibold text-slate-700">檢核標準： <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                            <ul class="list-disc list-inside text-slate-500 mt-1">
+                                <li>標示至少 3 測站資料與推估距離 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>畫出三個距離圓或定位圖 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>能解釋為何至少需要三個測站 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 4 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Week 4 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        <h3 class="text-xl font-bold text-slate-900">課本第 4 章精讀與真實地震波形資料 <cite class="not-italic text-brand-500">[cite: 1]</cite></h3>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium"><i class="fa-regular fa-calendar mr-1"></i> 2026/8/7 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-book-open text-brand-500 mr-1"></i> 主題與活動 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-2"><strong>主題：</strong>指定精讀《Introduction to Earthquake Seismology》第 4 章作為理論深化週。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <p class="text-xs text-slate-600"><strong>教學活動：</strong>使用 jAmaSeis 或即時波形工具，搭配真實地震事件資料，進行波形觀察、P/S 波辨識與教學轉化。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <h4 class="font-bold text-brand-700 text-sm mb-2"><i class="fa-solid fa-pen-to-square mr-1"></i> 作業 4：第 4 章導讀與波形分析小報告 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-3"><strong>繳交內容：</strong>1 頁中文導讀、真實波形截圖、標示 P/S 波相、3 個可教給中小學生的概念、200 字反思。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <div class="text-xs border-t border-slate-200 pt-2">
+                            <span class="font-semibold text-slate-700">檢核標準： <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                            <ul class="list-disc list-inside text-slate-500 mt-1">
+                                <li>用適當語言整理第 4 章重點 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>區分「中小學版」與「大學地球物理版」 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 5 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Week 5 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        <h3 class="text-xl font-bold text-slate-900">規模、震度、場址效應與建物反應 <cite class="not-italic text-brand-500">[cite: 1]</cite></h3>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium"><i class="fa-regular fa-calendar mr-1"></i> 2026/8/14 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-building-shield text-brand-500 mr-1"></i> 主題與活動 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-2"><strong>主題：</strong>規模 vs 震度？為什麼不同地方搖晃差很多？建物與地盤如何影響感受？ <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <p class="text-xs text-slate-600"><strong>教學活動：</strong>使用 IRIS Magnitude and Intensity 類資源與 Buildings in Earthquakes 案例。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <h4 class="font-bold text-brand-700 text-sm mb-2"><i class="fa-solid fa-pen-to-square mr-1"></i> 作業 5：完成地震防災互動網頁初版 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-3"><strong>繳交內容：</strong>GitHub/Vercel 網頁連結、「規模 vs 震度」比較圖、場址效應說明、學生互動題、教師教學提醒、200 字防災應用說明。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <div class="text-xs border-t border-slate-200 pt-2">
+                            <span class="font-semibold text-slate-700">檢核標準： <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                            <ul class="list-disc list-inside text-slate-500 mt-1">
+                                <li>網頁可開啟，觀點清楚區分規模與震度 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>說明場址效應差異並包含學生互動題 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 6 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Week 6 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        <h3 class="text-xl font-bold text-slate-900">野外實驗、成果整合與教案發表 <cite class="not-italic text-brand-500">[cite: 1]</cite></h3>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium"><i class="fa-regular fa-calendar mr-1"></i> 2026/8/21 <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-person-chalkboard text-brand-500 mr-1"></i> 主題與活動 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-2"><strong>主題：</strong>將前 5 週內容整合為可帶回學校使用的作品。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <p class="text-xs text-slate-600"><strong>教學活動：</strong>辦理野外或校園微動觀測（或以手機／公開資料替代）。結合 IRIS Teachable Moments 進行 5–7 分鐘成果發表。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <h4 class="font-bold text-brand-700 text-sm mb-2"><i class="fa-solid fa-pen-to-square mr-1"></i> 作業 6：期末教學作品與 5–7 分鐘發表 <cite class="not-italic text-brand-500">[cite: 1]</cite></h4>
+                        <p class="text-xs text-slate-600 mb-3"><strong>繳交內容：</strong>完整教案、學習單、教師說明、數位作品連結、成果簡報、300 字反思、5–7 分鐘發表。 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+                        <div class="text-xs border-t border-slate-200 pt-2">
+                            <span class="font-semibold text-slate-700">檢核標準： <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                            <ul class="list-disc list-inside text-slate-500 mt-1">
+                                <li>科學概念明確且活動適合中小學生 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                                <li>提供數位連結並能說明教學價值 <cite class="not-italic text-brand-500">[cite: 1]</cite></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 4: GRADING & EXTENSION -->
+        <section id="content-grading" class="tab-content hidden space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Assessment Rules -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex items-center gap-2 text-brand-600 font-bold mb-4">
+                        <i class="fa-solid fa-calculator text-lg"></i>
+                        <h2 class="text-xl text-slate-900">六、評量方式 <cite class="not-italic text-brand-500">[cite: 1]</cite></h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <div>
+                                <div class="font-bold text-slate-800 text-sm">每週可檢核作業 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                                <div class="text-xs text-slate-500">每週 10%，共 6 週 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                            </div>
+                            <span class="text-2xl font-black text-brand-600">60% <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <div>
+                                <div class="font-bold text-slate-800 text-sm">課堂參與與討論 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                                <div class="text-xs text-slate-500">包含小組討論、工具實作、教學轉化 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                            </div>
+                            <span class="text-2xl font-black text-brand-600">20% <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <div>
+                                <div class="font-bold text-slate-800 text-sm">期末成果發表 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                                <div class="text-xs text-slate-500">第 6 週作品與發表 <cite class="not-italic text-brand-500">[cite: 1]</cite></div>
+                            </div>
+                            <span class="text-2xl font-black text-brand-600">20% <cite class="not-italic text-brand-500">[cite: 1]</cite></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Extension mapping -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex items-center gap-2 text-brand-600 font-bold mb-4">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+                        <h2 class="text-xl text-slate-900">五、開學後地球物理學共用方式 <cite class="not-italic text-brand-500">[cite: 1]</cite></h2>
+                    </div>
+                    <div class="overflow-hidden rounded-lg border border-slate-100">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 font-bold text-slate-700 border-b border-slate-100">
+                                <tr>
+                                    <th class="p-2.5">暑期課程內容 <cite class="not-italic text-brand-500">[cite: 1]</cite></th>
+                                    <th class="p-2.5">開學後地球物理學延伸方向 <cite class="not-italic text-brand-500">[cite: 1]</cite></th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-600">
+                                <tr>
+                                    <td class="p-2.5 font-medium">Week 1 工具環境 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                    <td class="p-2.5">GitHub／資料分析工作流 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-medium">Week 2 地震動與震度 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                    <td class="p-2.5">地震動參數、PGA、PGV、震度換算 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-medium">Week 3 震央定位 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                    <td class="p-2.5">旅行時間、定位反演、不確定性分析 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-medium">Week 4 第 4 章精讀 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                    <td class="p-2.5">理論主軸、指定閱讀、波形分析 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-medium">Week 5 場址效應 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                    <td class="p-2.5">淺層地球物理、地盤放大、地震工程 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2.5 font-medium">Week 6 野外實驗 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                    <td class="p-2.5">儀器觀測、資料處理、專題報告 <cite class="not-italic text-brand-500">[cite: 1]</cite></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>北市大暑期地球科學課程計畫 · 專為中小學現職教師設計 <cite class="not-italic text-brand-500">[cite: 1]</cite></p>
+            <p class="text-slate-600">Earth Science Teacher Training Program &copy; 2026</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            // Reset tab button states
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('text-slate-500');
+            });
+
+            // Show current tab content
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+
+            // Highlight current tab button
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.add('tab-active');
+            activeBtn.classList.remove('text-slate-500');
+        }
+    </script>
+</body>
+</html>
